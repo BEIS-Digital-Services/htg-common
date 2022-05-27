@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <ApplicationIcon />
+    <StartupObject />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="beis.htg.voucher.persistence" Version="1.1.0" />
+    <PackageReference Include="GovukNotify" Version="4.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Beis.HelpToGrow.Repositories\Beis.HelpToGrow.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>
