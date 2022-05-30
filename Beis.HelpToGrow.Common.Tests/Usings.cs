@@ -1,5 +1,6 @@
 global using NUnit.Framework;
 global using Moq;
+global using Microsoft.Extensions.Options;
 
 global using Beis.HelpToGrow.Persistence;
 global using Beis.HelpToGrow.Persistence.Models;
@@ -17,6 +18,7 @@ global using Beis.HelpToGrow.Common.Interfaces;
 
 global using Beis.HelpToGrow.Common;
 global using Beis.HelpToGrow.Common.Services;
+global using Beis.HelpToGrow.Common.Config;
 
 global using Microsoft.Extensions.Configuration;
 global using Microsoft.Extensions.Logging;
