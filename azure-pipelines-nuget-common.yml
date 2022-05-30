@@ -19,4 +19,4 @@ extends:
   template: build-nuget-package.yml@template
   parameters:
     solutionToBuild: 'Beis.HelpToGrow.Common.sln'
-    projectToPublish: 'Beis.HelpToGrow.Common.csproj' # this should include the repositories project/dll as a dependency 
+    projectToPublish: 'Beis.HelpToGrow.Common.csproj'
