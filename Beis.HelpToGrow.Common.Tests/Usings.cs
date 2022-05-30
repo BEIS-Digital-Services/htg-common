@@ -1,8 +1,8 @@
 global using NUnit.Framework;
 global using Moq;
 
-global using Beis.Htg.VendorSme.Database;
-global using Beis.Htg.VendorSme.Database.Models;
+global using Beis.HelpToGrow.Persistence;
+global using Beis.HelpToGrow.Persistence.Models;
 
 global using System;
 global using System.Collections.Generic;

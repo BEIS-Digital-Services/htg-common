@@ -1,4 +1,4 @@
-﻿using Beis.Htg.VendorSme.Database.Models;
+﻿using Beis.HelpToGrow.Persistence.Models;
 using System.Threading.Tasks;
 
 namespace Beis.HelpToGrow.Repositories.Interfaces

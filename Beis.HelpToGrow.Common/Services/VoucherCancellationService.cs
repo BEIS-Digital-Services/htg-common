@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Beis.HelpToGrow.Common.Interfaces;
-using Beis.Htg.VendorSme.Database.Models;
+using Beis.HelpToGrow.Persistence.Models;
 using Beis.HelpToGrow.Repositories.Enums;
 
 namespace Beis.HelpToGrow.Common.Services
@@ -170,7 +170,7 @@ namespace Beis.HelpToGrow.Common.Services
 
         public async Task<CancellationResponse> CancelVoucherFromEmailLink(long enterpriseId, string emailAddress)
         {
-            Beis.Htg.VendorSme.Database.Models.token token = null;
+            token token = null;
             try
             {
                 _logger.LogInformation("Attempting to cancel voucher for enterprise {eid}", enterpriseId);

@@ -1,4 +1,4 @@
-﻿using Beis.Htg.VendorSme.Database.Models;
+﻿using Beis.HelpToGrow.Persistence.Models;
 using Beis.HelpToGrow.Common.Enums;
 using Beis.HelpToGrow.Common.Services;
 using Microsoft.Extensions.Logging;

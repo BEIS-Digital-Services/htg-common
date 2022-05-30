@@ -1,5 +1,5 @@
 using Beis.HelpToGrow.Repositories.Interfaces;
-using Beis.Htg.VendorSme.Database.Models;
+using Beis.HelpToGrow.Persistence.Models;
 using Beis.HelpToGrow.Common.Interfaces;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;

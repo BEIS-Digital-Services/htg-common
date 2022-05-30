@@ -1,6 +1,6 @@
 using Beis.HelpToGrow.Repositories.Interfaces;
-using Beis.Htg.VendorSme.Database;
-using Beis.Htg.VendorSme.Database.Models;
+using Beis.HelpToGrow.Persistence;
+using Beis.HelpToGrow.Persistence.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;

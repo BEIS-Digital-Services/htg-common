@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using Beis.Htg.VendorSme.Database.Models;
+using Beis.HelpToGrow.Persistence.Models;
 
 namespace Beis.HelpToGrow.Repositories.Interfaces
 {
