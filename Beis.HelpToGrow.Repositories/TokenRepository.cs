@@ -138,7 +138,7 @@ namespace Beis.HelpToGrow.Repositories
 
             try
             {
-                var persisted = await GetTokenByEnterpriseId(token.enterprise_id);
+                var persisted = GetTokenByTokenCode(token.token_code);
 
                 persisted.cancellation_status_id = token.cancellation_status_id;
                 await _context.SaveChangesAsync();
