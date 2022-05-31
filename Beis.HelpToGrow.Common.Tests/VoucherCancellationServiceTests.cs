@@ -21,6 +21,7 @@ namespace BEIS.HelpToGrow.Common.Tests
         private Mock<ITokenRepository> _mockTokenRepo;
         private Mock<IProductPriceRepository> _mockProductPriceRepo;
         private Mock<IEncryptionService> _mockEncryptionService;
+        private Mock<IVendorCompanyRepository> _vendorCompanyRepository;
 
         private enterprise enterprise;
         private token token;
@@ -40,7 +41,8 @@ namespace BEIS.HelpToGrow.Common.Tests
             _mockProductPriceRepo.Setup(x => x.GetByProductId(It.IsAny<long>()))
                 .ReturnsAsync((long id) => productPrice);
             _mockEncryptionService = new Mock<IEncryptionService>();
-            _sut = new VoucherCancellationService(_mockLogger.Object, _mockEnterpriseRepo.Object, _mockTokenRepo.Object, _mockProductPriceRepo.Object, _mockEncryptionService.Object);
+            _vendorCompanyRepository = new Mock<IVendorCompanyRepository>();
+            _sut = new VoucherCancellationService(_mockLogger.Object, _mockEnterpriseRepo.Object, _mockTokenRepo.Object, _mockProductPriceRepo.Object, _mockEncryptionService.Object, _vendorCompanyRepository.Object);
         }
 
         [Test]
