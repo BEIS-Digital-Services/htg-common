@@ -21,13 +21,14 @@ namespace Beis.HelpToGrow.Common.Services
         private readonly IEncryptionService _encryptionService;
         private readonly IVendorCompanyRepository _vendorCompanyRepository;
 
-        public VoucherCancellationService(ILogger<VoucherCancellationService> logger, IEnterpriseRepository repository, ITokenRepository tokenRepository, IProductPriceRepository productPriceRepository, IEncryptionService encryptionService)
+        public VoucherCancellationService(ILogger<VoucherCancellationService> logger, IEnterpriseRepository repository, ITokenRepository tokenRepository, IProductPriceRepository productPriceRepository, IEncryptionService encryptionService, IVendorCompanyRepository vendorCompanyRepository)
         {
             _logger = logger;
             _repository = repository;
             _tokenRepository = tokenRepository;
             _productPriceRepository = productPriceRepository;
             _encryptionService = encryptionService;
+            _vendorCompanyRepository = vendorCompanyRepository;
         }
 
         public async Task<CancellationResponse> CancelToken(token token)
