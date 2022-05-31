@@ -94,6 +94,33 @@ namespace BEIS.HelpToGrow.Common.Tests
         }
 
         [Test]
+        public async Task MustGenerateDuplicateVoucherWhenSpecified()
+        {
+            // if the voucher has already been created for the enterprise/product then return the existing code.
+
+            var vendor_company = new vendor_company()
+            {
+                vendorid = 1,
+                registration_id = "12345"
+            };
+            var enterprise = new enterprise()
+            {
+                enterprise_id = 345
+            };
+            var product = new product()
+            {
+                product_id = 123,
+                price = "200"
+            };
+
+            var voucherCode1 = await _smeVoucherGenerationService.GenerateVoucher(vendor_company, enterprise, product, voucherOptions, false);
+            var voucherCode2 = await _smeVoucherGenerationService.GenerateVoucher(vendor_company, enterprise, product, voucherOptions, false);
+
+            Assert.AreNotEqual(voucherCode1, voucherCode2);
+        }
+
+
+        [Test]
         public void MustGenerateSetCode()
         {
             var setCode = _smeVoucherGenerationService.GenerateSetCode(voucherCodeLength);

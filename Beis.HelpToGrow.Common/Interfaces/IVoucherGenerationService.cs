@@ -7,7 +7,7 @@ namespace Beis.HelpToGrow.Common.Interfaces
 {
     public interface IVoucherGenerationService
     {
-        public Task<string> GenerateVoucher(vendor_company vendorCompany, enterprise enterprise, product product, IOptions<VoucherSettings> voucherSettings);
+        public Task<string> GenerateVoucher(vendor_company vendorCompany, enterprise enterprise, product product, IOptions<VoucherSettings> voucherSettings,  bool returnExistingVoucherIfExists = true);
         public string GenerateSetCode(int length);
     }
 }

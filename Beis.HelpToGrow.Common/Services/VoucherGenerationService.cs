@@ -31,14 +31,16 @@ namespace Beis.HelpToGrow.Common.Services
             _voucherSettings = voucherSettings;
         }
 
-        public async Task<string> GenerateVoucher(vendor_company vendorCompany, enterprise enterprise, product product, IOptions<VoucherSettings> voucherSettings)
+        public async Task<string> GenerateVoucher(vendor_company vendorCompany, enterprise enterprise, product product, IOptions<VoucherSettings> voucherSettings, bool returnExistingVoucherIfExists = true)
         {
             _logger.LogInformation("Executing VoucherGenerationService.GenerateVoucher at {@time} for enterprise {@enterprise} and product {@product}", DateTime.Now, enterprise.enterprise_id, product.product_id);
             try
             {
                 var voucherCodeLength = voucherSettings.Value.VoucherCodeLength;
                 var voucherCodeString = GenerateSetCode(voucherCodeLength);
-                var token = await _tokenRepository.GetToken(enterprise.enterprise_id, product.product_id);
+                token token = null;
+                if(returnExistingVoucherIfExists)
+                    token = await _tokenRepository.GetToken(enterprise.enterprise_id, product.product_id);
                 string encryptedToken;
                 if (token == null)
                 {
