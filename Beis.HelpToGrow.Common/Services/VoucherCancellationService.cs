@@ -31,7 +31,7 @@ namespace Beis.HelpToGrow.Common.Services
             _vendorCompanyRepository = vendorCompanyRepository;
         }
 
-        public async Task<CancellationResponse> CancelToken(token token)
+        public async Task<CancellationResponse> CancelToken(token token, bool canCancelAfterFreeTrialPeriod = false)
         {
             try
             {
@@ -96,6 +96,11 @@ namespace Beis.HelpToGrow.Common.Services
 
                     if (trialPeriodEndDate.Date < DateTime.Now)
                     {
+                        if(canCancelAfterFreeTrialPeriod)
+                        {
+                            token.cancellation_status_id = (int)CancellationStatus.CannotReapply;
+                            await _tokenRepository.UpdateToken(token);
+                        }
                         return CancellationResponse.FreeTrialExpired;
                     }
                 }
@@ -159,7 +164,7 @@ namespace Beis.HelpToGrow.Common.Services
                     return CancellationResponse.UnknownVoucherCode;
                 }
 
-                return await CancelToken(token);
+                return await CancelToken(token, true);
 
             }
             catch(Exception e)
