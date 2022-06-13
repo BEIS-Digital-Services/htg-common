@@ -13,11 +13,16 @@ namespace Beis.HelpToGrow.Common.Models
             _configuration = configuration;
         }
 
-        public string NotifyApiKey => _configuration["NOTIFY_API_KEY"];
-        public string TokenRedeemEmailReminder1TemplateId => _configuration["NOTIFY_TOKEN_REDEEM_EMAIL_REMINDER_1_TEMPLATE_ID"];
-        public string TokenRedeemEmailReminder2TemplateId => _configuration["NOTIFY_TOKEN_REDEEM_EMAIL_REMINDER_2_TEMPLATE_ID"];
-        public string TokenRedeemEmailReminder3TemplateId => _configuration["NOTIFY_TOKEN_REDEEM_EMAIL_REMINDER_3_TEMPLATE_ID"];
-        public string VerifyApplicantEmailAddressTemplateId => _configuration["NOTIFY_VERIFY_EMAIL_TEMPLATE_ID"];
-        public string IssueTokenTemplateId => _configuration["NOTIFY_ISSUE_TOKEN_TEMPLATE_ID"];
+        public string NotifyApiKey => _configuration["NotifyApiKey"];
+        public string TokenRedeemEmailReminder1TemplateId => _configuration["TokenRedeemEmailReminder1TemplateId"];
+        public string TokenRedeemEmailReminder2TemplateId => _configuration["TokenRedeemEmailReminder2TemplateId"];
+        public string TokenRedeemEmailReminder3TemplateId => _configuration["TokenRedeemEmailReminder3TemplateId"];
+        public string VerifyApplicantEmailAddressTemplateId => _configuration["NotifyVerifyEmailTemplateId"];
+        public string IssueTokenTemplateId => _configuration["NotifyIssueTokenTemplateId"];
+
+        public string EmailVerificationUrl => _configuration["EmailVerificationUrl"];
+
+
+      
     }
 }

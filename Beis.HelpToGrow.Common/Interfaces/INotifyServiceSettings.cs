@@ -8,5 +8,7 @@
         string TokenRedeemEmailReminder3TemplateId { get; }
         string VerifyApplicantEmailAddressTemplateId { get; }
         string IssueTokenTemplateId { get; }
+
+        string EmailVerificationUrl { get; }
     }
 }
