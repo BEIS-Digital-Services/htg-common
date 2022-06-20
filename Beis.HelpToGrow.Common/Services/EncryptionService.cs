@@ -79,7 +79,7 @@ namespace Beis.HelpToGrow.Common.Services
             byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
             var derivedPassword = new Rfc2898DeriveBytes(vendorSalt, saltValueBytes, _passwordIterations);
             byte[] keyBytes = derivedPassword.GetBytes(_keySize / 8);
-            var symmetricKey = new RijndaelManaged();
+            var symmetricKey =  Aes.Create("AesManaged");//new RijndaelManaged();
             symmetricKey.Mode = CipherMode.CBC;
             var plainTextBytes = new byte[cipherTextBytes.Length];
             int byteCount;
@@ -89,8 +89,37 @@ namespace Beis.HelpToGrow.Common.Services
                 {
                     using (var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
                     {
-   
-                        byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+
+                        //byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
+                        //memStream.Close();
+                        //cryptoStream.Close();
+
+                        // the above no longer works for large strings - see the link below
+                        //https://github.com/dotnet/runtime/issues/61918
+
+                        byte[] initialText = new byte[0];
+                        byte[] decryptedBytes = new byte[plainTextBytes.Length];
+                        var decryptedSpan = decryptedBytes.AsSpan();
+                        int read;
+                        int totalRead = 0;
+                        do
+                        {
+                            read = cryptoStream.Read(decryptedSpan);
+                            decryptedSpan = decryptedSpan.Slice(read);
+                            totalRead += read;
+                        } while (read != 0);
+                        if (totalRead > 0)
+                        {
+                            //Only use the read bytes else you will have some 0's at the end
+                            Array.Resize(ref initialText, totalRead);
+                            Array.Copy(decryptedBytes, initialText, totalRead);
+                        }
+                        System.Diagnostics.Debug.WriteLine(BitConverter.ToString(initialText));
+
+
+                        plainTextBytes = initialText;
+                        byteCount = totalRead;
+
                         memStream.Close();
                         cryptoStream.Close();
                     }
@@ -99,6 +128,7 @@ namespace Beis.HelpToGrow.Common.Services
             symmetricKey.Clear();
 
             return Encoding.UTF8.GetString(plainTextBytes, 0, byteCount);
-        }   
+        }
+    
     }
 }
