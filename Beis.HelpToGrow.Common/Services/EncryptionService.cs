@@ -43,26 +43,30 @@ namespace Beis.HelpToGrow.Common.Services
             var plainTextBytes = Encoding.UTF8.GetBytes(plainText);
             var derivedPassword = new Rfc2898DeriveBytes(vendorSalt, saltValueBytes, _passwordIterations);
             var keyBytes = derivedPassword.GetBytes(_keySize / 8);
-            var symmetricKey = new RijndaelManaged();
-            symmetricKey.Mode = CipherMode.CBC;
-            byte[] cipherTextBytes;
-            using (var encryptor = symmetricKey.CreateEncryptor(keyBytes, initialVectorBytes))
+            using (var symmetricKey = Aes.Create("AesManaged"))
             {
-                using (MemoryStream memStream = new MemoryStream())
+                symmetricKey.Mode = CipherMode.CBC;
+                byte[] cipherTextBytes;
+                using (var encryptor = symmetricKey.CreateEncryptor(keyBytes, initialVectorBytes))
                 {
-                    using (CryptoStream cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write))
+                    using (MemoryStream memStream = new MemoryStream())
                     {
-                        cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
-                        cryptoStream.FlushFinalBlock();
-                        cipherTextBytes = memStream.ToArray();
-                        memStream.Close();
-                        cryptoStream.Close();
+                        using (CryptoStream cryptoStream = new CryptoStream(memStream, encryptor, CryptoStreamMode.Write))
+                        {
+                            cryptoStream.Write(plainTextBytes, 0, plainTextBytes.Length);
+                            cryptoStream.FlushFinalBlock();
+                            cipherTextBytes = memStream.ToArray();
+                            memStream.Close();
+                            cryptoStream.Close();
+                        }
                     }
                 }
-            }
-            symmetricKey.Clear();
+                symmetricKey.Clear();
 
-        return Convert.ToBase64String(cipherTextBytes).Replace('+', '-').Replace('/', '_');
+                return Convert.ToBase64String(cipherTextBytes).Replace('+', '-').Replace('/', '_');
+            }
+                
+            
         }
 
         public string Decrypt(string cipherText, string vendorSalt)
@@ -79,26 +83,41 @@ namespace Beis.HelpToGrow.Common.Services
             byte[] cipherTextBytes = Convert.FromBase64String(cipherText);
             var derivedPassword = new Rfc2898DeriveBytes(vendorSalt, saltValueBytes, _passwordIterations);
             byte[] keyBytes = derivedPassword.GetBytes(_keySize / 8);
-            var symmetricKey = new RijndaelManaged();
-            symmetricKey.Mode = CipherMode.CBC;
-            var plainTextBytes = new byte[cipherTextBytes.Length];
-            int byteCount;
-            using (var decryptor = symmetricKey.CreateDecryptor(keyBytes, initialVectorBytes))
+            using (var symmetricKey = Aes.Create("AesManaged"))
             {
-                using (var memStream = new MemoryStream(cipherTextBytes))
+                symmetricKey.Mode = CipherMode.CBC;
+                byte[] initialText = new byte[0];
+                int totalRead = 0;
+                using (var decryptor = symmetricKey.CreateDecryptor(keyBytes, initialVectorBytes))
                 {
-                    using (var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
+                    using (var memStream = new MemoryStream(cipherTextBytes))
                     {
-   
-                        byteCount = cryptoStream.Read(plainTextBytes, 0, plainTextBytes.Length);
-                        memStream.Close();
-                        cryptoStream.Close();
-                    }
-                }
-            }
-            symmetricKey.Clear();
+                        using (var cryptoStream = new CryptoStream(memStream, decryptor, CryptoStreamMode.Read))
+                        {
 
-            return Encoding.UTF8.GetString(plainTextBytes, 0, byteCount);
-        }   
+                            byte[] decryptedBytes = new byte[cipherTextBytes.Length];
+                            var decryptedSpan = decryptedBytes.AsSpan();
+                            int read;
+
+                            do
+                            {
+                                read = cryptoStream.Read(decryptedSpan);
+                                decryptedSpan = decryptedSpan.Slice(read);
+                                totalRead += read;
+                            } while (read != 0);
+                            if (totalRead > 0)
+                            {
+                                //Only use the read bytes else you will have some 0's at the end
+                                Array.Resize(ref initialText, totalRead);
+                                Array.Copy(decryptedBytes, initialText, totalRead);
+                            }
+                            System.Diagnostics.Debug.WriteLine(BitConverter.ToString(initialText));
+                        }
+                    }
+                    symmetricKey.Clear();
+                    return Encoding.UTF8.GetString(initialText, 0, totalRead);
+                }
+            }                                
+        }
     }
 }
